@@ -45,24 +45,15 @@ def get_crypto_info(crypto_id: str) -> dict:
         'Authorization': f'Bearer {os.getenv("COINGECKO_API_KEY")}'
     }
 
-    for attempt in range(5):
-        try:
-            response = requests.get(url, headers=headers)
-            if response.status_code == 429:
-                print("Rate limit exceeded. Sleeping for 30 seconds...")
-                time.sleep(30)
-                continue
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+        return data[0] if data else None
 
-            response.raise_for_status()
-            data = response.json()
-            return data[0] if data else None
-
-        except requests.exceptions.RequestException as e:
-            print(f"Error fetching data: {e}")
-            time.sleep(5)
-            continue
-
-    return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data: {e}")
+        return None
 
 
 def get_cursor(connection: psycopg2.extensions.connection) -> psycopg2.extensions.cursor:
@@ -167,8 +158,25 @@ def main():
 
             with conn:
                 with conn.cursor() as cursor:
+                    start_time = time.time()
+                    request_count = 0
+
                     for id in random_ids:
+                        current_time = time.time()
+
+                        if request_count >= 30:
+                            elapsed_time = current_time - start_time
+                            if elapsed_time < 60:
+                                sleep_time = 60 - elapsed_time
+                                print(f"""Rate limit reached. Sleeping for {
+                                      sleep_time:.2f} seconds...""")
+                                time.sleep(sleep_time)
+
+                            start_time = time.time()
+                            request_count = 0
+
                         crypto_data = get_crypto_info(id)
+
                         if crypto_data:
                             print(f"Inserting data for {id}")
                             success = insert_cryptocurrencies(
@@ -178,6 +186,9 @@ def main():
                                 print(f"Failed to insert data for {id}")
                         else:
                             print(f"No data returned for {id}")
+
+                        request_count += 1
+
         except Exception as e:
             print(f"An error occurred: {e}")
         finally:
