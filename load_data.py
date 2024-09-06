@@ -32,7 +32,7 @@ def select_random_crypto_ids(crypto_ids, num_samples=50):
 
 def get_crypto_info(crypto_id: str) -> list[dict]:
     """Get's information for a crypto currency from the Coingecko API"""
-    url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin{
+    url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids={
         crypto_id}"
 
     try:
@@ -141,6 +141,7 @@ def main():
 
     for id in random_ids:
         crypto_data = get_crypto_info(id)
+        print(crypto_data)
         success = insert_cryptocurrencies(conn, crypto_data)
 
         conn.close()
