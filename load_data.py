@@ -1,4 +1,5 @@
 import requests
+import psycopg2
 
 
 def get_crypto_info(crypto_id: str) -> list[dict]:
@@ -14,3 +15,8 @@ def get_crypto_info(crypto_id: str) -> list[dict]:
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
         return None
+
+
+def get_cursor(connection: psycopg2.extensions.connection) -> psycopg2.extensions.cursor:
+    """Sets up cursor"""
+    return connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
