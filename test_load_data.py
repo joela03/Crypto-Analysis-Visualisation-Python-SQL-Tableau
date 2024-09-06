@@ -20,3 +20,12 @@ def test_get_crypto_info_success(mock_requests_get):
 
     assert isinstance(result, list)
     assert all(isinstance(item, dict) for item in result)
+
+
+def test_get_crypto_info_failure(mock_requests_get):
+    """Test case for a failed API call."""
+    mock_requests_get.side_effect = requests.exceptions.RequestException(
+        "Network Error")
+
+    result = get_crypto_info("bitcoin")
+    assert result is None
