@@ -2,6 +2,7 @@ import requests
 import random
 import psycopg2
 import psycopg2.extras
+import json
 
 
 def fetch_crypto_ids():
@@ -92,38 +93,43 @@ def insert_cryptocurrencies(conn, crypto_data):
                 roi = EXCLUDED.roi,
                 last_updated = EXCLUDED.last_updated"""
 
-    curs.execute(query, {
-        'id': crypto_data['id'],
-        'symbol': crypto_data['symbol'],
-        'name': crypto_data['name'],
-        'current_price': crypto_data['current_price'],
-        'market_cap': crypto_data['market_cap'],
-        'market_cap_rank': crypto_data['market_cap_rank'],
-        'fully_diluted_valuation': crypto_data['fully_diluted_valuation'],
-        'total_volume': crypto_data['total_volume'],
-        'high_24h': crypto_data['high_24h'],
-        'low_24h': crypto_data['low_24h'],
-        'price_change_24h': crypto_data['price_change_24h'],
-        'price_change_percentage_24h': crypto_data['price_change_percentage_24h'],
-        'market_cap_change_24h': crypto_data['market_cap_change_24h'],
-        'market_cap_change_percentage_24h': crypto_data['market_cap_change_percentage_24h'],
-        'circulating_supply': crypto_data['circulating_supply'],
-        'total_supply': crypto_data['total_supply'],
-        'max_supply': crypto_data['max_supply'],
-        'ath': crypto_data['ath'],
-        'ath_change_percentage': crypto_data['ath_change_percentage'],
-        'ath_date': crypto_data['ath_date'],
-        'atl': crypto_data['atl'],
-        'atl_change_percentage': crypto_data['atl_change_percentage'],
-        'atl_date': crypto_data['atl_date'],
-        'roi': json.dumps(crypto_data['roi']) if crypto_data['roi'] else None,
-        'last_updated': crypto_data['last_updated']
-    })
+    id = crypto_data.get('id')
+    symbol = crypto_data.get('symbol')
+    name = crypto_data.get('name')
+    current_price = crypto_data.get('current_price')
+    market_cap = crypto_data.get('market_cap')
+    market_cap_rank = crypto_data.get('market_cap_rank')
+    fully_diluted_valuation = crypto_data.get('fully_diluted_valuation')
+    total_volume = crypto_data.get('total_volume')
+    high_24h = crypto_data.get('high_24h')
+    low_24h = crypto_data.get('low_24h')
+    price_change_24h = crypto_data.get('price_change_24h')
+    price_change_percentage_24h = crypto_data.get(
+        'price_change_percentage_24h')
+    market_cap_change_24h = crypto_data.get('market_cap_change_24h')
+    market_cap_change_percentage_24h = crypto_data.get(
+        'market_cap_change_percentage_24h')
+    circulating_supply = crypto_data.get('circulating_supply')
+    total_supply = crypto_data.get('total_supply')
+    max_supply = crypto_data.get('max_supply')
+    ath = crypto_data.get('ath')
+    ath_change_percentage = crypto_data.get('ath_change_percentage')
+    ath_date = crypto_data.get('ath_date')
+    atl = crypto_data.get('atl')
+    atl_change_percentage = crypto_data.get('atl_change_percentage')
+    atl_date = crypto_data.get('atl_date')
+    roi = json.dumps(crypto_data.get(
+        'roi')) if crypto_data.get('roi') else None
+    last_updated = crypto_data.get('last_updated')
 
-    columns_touched = curs.rowcount()
+    curs.execute(query, (
+        id, symbol, name, current_price, market_cap, market_cap_rank,
+        fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h,
+        price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+        circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
+        ath_date, atl, atl_change_percentage, atl_date, roi, last_updated,
+    ))
     conn.commit()
-
-    return columns_touched > 0
 
 
 def main():
