@@ -150,10 +150,10 @@ def main():
         print(crypto_data)
         success = insert_cryptocurrencies(conn, crypto_data)
 
-        conn.close()
-
         if not success:
             return {"error": f"Failed to insert data for {id}"}
+
+    conn.close()
 
     return "Data for all random ids added successfully"
 
