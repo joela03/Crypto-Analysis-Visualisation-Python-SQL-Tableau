@@ -1,6 +1,6 @@
 import pytest
 import requests
-from load_data import get_crypto_info
+from load_data import get_crypto_info, fetch_crypto_ids
 
 
 @pytest.fixture
@@ -29,3 +29,15 @@ def test_get_crypto_info_failure(mock_requests_get):
 
     result = get_crypto_info("bitcoin")
     assert result is None
+
+
+def test_fetch_crypto_ids_success(mock_requests_get):
+    """Test case for a successful API call."""
+    mock_response = ["bitcoin", "ethereum"]
+    mock_requests_get.return_value.status_code = 200
+    mock_requests_get.return_value.json.return_value = mock_response
+
+    result = fetch_crypto_ids()
+
+    assert isinstance(result, list)
+    assert all(isinstance(item, str) for item in result)
