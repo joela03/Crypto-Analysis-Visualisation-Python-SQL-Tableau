@@ -41,3 +41,12 @@ def test_fetch_crypto_ids_success(mock_requests_get):
 
     assert isinstance(result, list)
     assert all(isinstance(item, str) for item in result)
+
+
+def test_fetch_crypto_ids_failure(mock_requests_get):
+    """Test case for a failed API call."""
+    mock_requests_get.side_effect = requests.exceptions.RequestException(
+        "Network Error")
+
+    result = fetch_crypto_ids()
+    assert result is None
