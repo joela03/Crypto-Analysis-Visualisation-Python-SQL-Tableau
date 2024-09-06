@@ -138,22 +138,30 @@ def main():
     print(f"Selected ID's: {random_ids}")
 
     if random_ids:
-        conn = psycopg2.connect(
-            dbname='crypto',
-            user='joel',
-            host='localhost',
-            port='5432'
-        )
+        try:
+            conn = psycopg2.connect(
+                dbname='crypto',
+                user='joel',
+                host='localhost',
+                port='5432'
+            )
 
-    for id in random_ids:
-        crypto_data = get_crypto_info(id)
-        print(crypto_data)
-        success = insert_cryptocurrencies(conn, crypto_data)
+            with conn:
+                with conn.cursor() as curs:
+                    for id in random_ids:
+                        crypto_data = get_crypto_info(id)
+                        print(f"Inserting data for {id}: {crypto_data}")
+                        success = insert_cryptocurrencies(conn, crypto_data)
 
-        if not success:
-            return {"error": f"Failed to insert data for {id}"}
-
-    conn.close()
+                        if not success:
+                            return {"error": f"Failed to insert data for {id}"}
+                    else:
+                        print(f"No data returned for {id}")
+        except Exception as e:
+            print(f"Error: {e}")
+        finally:
+            if conn:
+                conn.close()
 
     return "Data for all random ids added successfully"
 
