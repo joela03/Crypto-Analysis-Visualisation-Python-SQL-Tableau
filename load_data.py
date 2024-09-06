@@ -1,5 +1,6 @@
 import requests
 import random
+import time
 import psycopg2
 import psycopg2.extras
 import json
@@ -36,14 +37,24 @@ def get_crypto_info(crypto_id: str) -> dict:
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids={
         crypto_id}"
 
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an error if the request fails
-        data = response.json()
-        return data[0]
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching data: {e}")
-        return None
+    for attempt in range(5):
+        try:
+            response = requests.get(url)
+            if response.status_code == 429:
+                print("Rate limit exceeded. Sleeping for 30 seconds...")
+                time.sleep(30)
+                continue
+
+            response.raise_for_status()
+            data = response.json()
+            return data[0] if data else None
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching data: {e}")
+            time.sleep(5)
+            continue
+
+    return None
 
 
 def get_cursor(connection: psycopg2.extensions.connection) -> psycopg2.extensions.cursor:
@@ -147,23 +158,25 @@ def main():
             )
 
             with conn:
-                with conn.cursor() as curs:
+                with conn.cursor() as cursor:
                     for id in random_ids:
                         crypto_data = get_crypto_info(id)
-                        print(f"Inserting data for {id}: {crypto_data}")
-                        success = insert_cryptocurrencies(conn, crypto_data)
+                        if crypto_data:
+                            print(f"Inserting data for {id}")
+                            success = insert_cryptocurrencies(
+                                conn, crypto_data)
 
-                        if not success:
-                            return {"error": f"Failed to insert data for {id}"}
-                    else:
-                        print(f"No data returned for {id}")
+                            if not success:
+                                print(f"Failed to insert data for {id}")
+                        else:
+                            print(f"No data returned for {id}")
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"An error occurred: {e}")
         finally:
             if conn:
                 conn.close()
 
-    return "Data for all random ids added successfully"
+    return "Data for all random IDs added successfully"
 
 
 if __name__ == "__main__":
