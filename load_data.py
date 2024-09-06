@@ -188,6 +188,7 @@ def main():
                             print(f"No data returned for {id}")
 
                         request_count += 1
+                        time.sleep(2)
 
         except Exception as e:
             print(f"An error occurred: {e}")
