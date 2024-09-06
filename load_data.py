@@ -20,7 +20,7 @@ def fetch_crypto_ids():
         return []
 
 
-def select_random_crypto_ids(crypto_ids, num_samples=50):
+def select_random_crypto_ids(crypto_ids, num_samples=50) -> list[str]:
     """Select a random sample of cryptocurrency IDs."""
     if len(crypto_ids) < num_samples:
         print(f"""Warning: Only {
@@ -30,7 +30,7 @@ def select_random_crypto_ids(crypto_ids, num_samples=50):
     return random.sample(crypto_ids, num_samples)
 
 
-def get_crypto_info(crypto_id: str) -> list[dict]:
+def get_crypto_info(crypto_id: str) -> dict:
     """Get's information for a crypto currency from the Coingecko API"""
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids={
         crypto_id}"
@@ -39,7 +39,7 @@ def get_crypto_info(crypto_id: str) -> list[dict]:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error if the request fails
         data = response.json()
-        return data
+        return data[0]
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
         return None
