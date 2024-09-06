@@ -130,8 +130,7 @@ def main():
     random_ids = select_random_crypto_ids(ids, 50)
     print(f"Selected ID's: {random_ids}")
 
-    if crypto_data:
-
+    if random_ids:
         conn = psycopg2.connect(
             dbname='crypto',
             user='joel',
