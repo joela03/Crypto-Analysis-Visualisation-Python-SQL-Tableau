@@ -54,4 +54,4 @@ def test_fetch_crypto_ids_failure(mock_requests_get):
         "Network Error")
 
     result = fetch_crypto_ids()
-    assert result is None
+    assert result == []

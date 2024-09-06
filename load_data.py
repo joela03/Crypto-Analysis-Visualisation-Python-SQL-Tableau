@@ -112,3 +112,11 @@ def insert_cryptocurrencies(conn, crypto_data):
     conn.commit()
 
     return columns_touched > 0
+
+
+def main():
+    ...
+
+
+if __name__ == "__main__":
+    main()
