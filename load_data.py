@@ -1,6 +1,7 @@
 import requests
 import random
 import psycopg2
+import psycopg2.extras
 
 
 def fetch_crypto_ids():
