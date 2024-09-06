@@ -1,9 +1,13 @@
+import os
+from dotenv import load_dotenv
 import requests
 import random
 import time
 import psycopg2
 import psycopg2.extras
 import json
+
+load_dotenv()
 
 
 def fetch_crypto_ids():
@@ -37,9 +41,13 @@ def get_crypto_info(crypto_id: str) -> dict:
     url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids={
         crypto_id}"
 
+    headers = {
+        'Authorization': f'Bearer {os.getenv("COINGECKO_API_KEY")}'
+    }
+
     for attempt in range(5):
         try:
-            response = requests.get(url)
+            response = requests.get(url, headers=headers)
             if response.status_code == 429:
                 print("Rate limit exceeded. Sleeping for 30 seconds...")
                 time.sleep(30)
