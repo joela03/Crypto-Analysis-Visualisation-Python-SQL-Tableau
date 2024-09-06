@@ -1,4 +1,5 @@
 import requests
+import random
 import psycopg2
 
 
@@ -16,6 +17,16 @@ def fetch_crypto_ids():
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data: {e}")
         return []
+
+
+def select_random_crypto_ids(crypto_ids, num_samples=50):
+    """Select a random sample of cryptocurrency IDs."""
+    if len(crypto_ids) < num_samples:
+        print(f"Warning: Only {
+              len(crypto_ids)} cryptocurrency IDs available. Adjusting sample size.")
+        num_samples = len(crypto_ids)
+
+    return random.sample(crypto_ids, num_samples)
 
 
 def get_crypto_info(crypto_id: str) -> list[dict]:
