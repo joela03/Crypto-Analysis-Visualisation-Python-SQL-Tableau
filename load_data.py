@@ -22,8 +22,8 @@ def fetch_crypto_ids():
 def select_random_crypto_ids(crypto_ids, num_samples=50):
     """Select a random sample of cryptocurrency IDs."""
     if len(crypto_ids) < num_samples:
-        print(f"Warning: Only {
-              len(crypto_ids)} cryptocurrency IDs available. Adjusting sample size.")
+        print(f"""Warning: Only {
+              len(crypto_ids)} cryptocurrency IDs available. Adjusting sample size.""")
         num_samples = len(crypto_ids)
 
     return random.sample(crypto_ids, num_samples)
@@ -126,7 +126,18 @@ def insert_cryptocurrencies(conn, crypto_data):
 
 
 def main():
-    ...
+    ids = fetch_crypto_ids()
+    random_ids = select_random_crypto_ids(ids, 50)
+    print(f"Selected ID's: {random_ids}")
+
+    for id in random_ids:
+        crypto_data = get_crypto_info(id)
+        success = insert_cryptocurrencies(crypto_data)
+
+        if not success:
+            return {"error": f"Failed to insert data for {id}"}
+
+    return "Data for all random ids added successfully"
 
 
 if __name__ == "__main__":
