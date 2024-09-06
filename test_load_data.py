@@ -33,7 +33,10 @@ def test_get_crypto_info_failure(mock_requests_get):
 
 def test_fetch_crypto_ids_success(mock_requests_get):
     """Test case for a successful API call."""
-    mock_response = ["bitcoin", "ethereum"]
+    mock_response = [
+        {"id": "bitcoin", "symbol": "btc", "name": "Bitcoin"},
+        {"id": "ethereum", "symbol": "eth", "name": "Ethereum"}
+    ]
     mock_requests_get.return_value.status_code = 200
     mock_requests_get.return_value.json.return_value = mock_response
 
@@ -41,6 +44,8 @@ def test_fetch_crypto_ids_success(mock_requests_get):
 
     assert isinstance(result, list)
     assert all(isinstance(item, str) for item in result)
+    assert "bitcoin" in result
+    assert "ethereum" in result
 
 
 def test_fetch_crypto_ids_failure(mock_requests_get):

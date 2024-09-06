@@ -4,8 +4,18 @@ import psycopg2
 
 def fetch_crypto_ids():
     """Fetch cryptocurrency IDs from CoinGecko API."""
+    url = "https://api.coingecko.com/api/v3/coins/list"
 
-    ...
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        crypto_ids = [crypto['id'] for crypto in data]
+        return crypto_ids
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data: {e}")
+        return []
 
 
 def get_crypto_info(crypto_id: str) -> list[dict]:
