@@ -141,7 +141,11 @@ def insert_cryptocurrencies(conn, crypto_data):
         circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
         ath_date, atl, atl_change_percentage, atl_date, roi, last_updated,
     ))
+    data = curs.rowcount()
     conn.commit()
+    conn.close()
+
+    return data
 
 
 def main():
