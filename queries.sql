@@ -107,3 +107,14 @@ FROM
     cryptocurrencies
 ORDER BY 
     market_cap_rank;
+
+-- Identify most volatile crypto currencies
+SELECT 
+    name, 
+    symbol, 
+    price_change_percentage_24h
+FROM 
+    cryptocurrencies
+ORDER BY 
+    ABS(price_change_percentage_24h) DESC
+LIMIT 10;
