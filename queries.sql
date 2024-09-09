@@ -81,3 +81,20 @@ FROM
     cryptocurrencies
 ORDER BY 
     last_updated DESC;
+
+-- Find's the market cap distribution
+
+SELECT 
+    CASE
+        WHEN market_cap < 10000000 THEN '< 10M'
+        WHEN market_cap BETWEEN 10000000 AND 100000000 THEN '10M-100M'
+        WHEN market_cap BETWEEN 100000000 AND 1000000000 THEN '100M-1B'
+        ELSE '> 1B'
+    END AS market_cap_range,
+    COUNT(*) AS count
+FROM 
+    cryptocurrencies
+GROUP BY 
+    market_cap_range
+ORDER BY 
+    market_cap_range;
