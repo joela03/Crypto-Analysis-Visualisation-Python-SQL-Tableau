@@ -57,3 +57,15 @@ SELECT
     STDDEV(atl) AS stddev_atl
 
 FROM cryptocurrencies;
+
+-- SELECT'S top 10 cryptocurrencies by market cap
+SELECT 
+    name, 
+    symbol, 
+    market_cap
+FROM 
+    cryptocurrencies
+ORDER BY 
+    market_cap DESC
+LIMIT 10;
+
