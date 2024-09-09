@@ -49,6 +49,8 @@ def get_crypto_info(crypto_id: str) -> dict:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
+        if not data:
+            print(f"No data returned for crypto ID: {crypto_id}")
         return data[0] if data else None
 
     except requests.exceptions.RequestException as e:
@@ -143,6 +145,7 @@ def insert_cryptocurrencies(conn, crypto_data):
 
 
 def main():
+    print(os.getenv("COINGECKO_API_KEY"))
     ids = fetch_crypto_ids()
     random_ids = select_random_crypto_ids(ids, 50)
     print(f"Selected ID's: {random_ids}")
