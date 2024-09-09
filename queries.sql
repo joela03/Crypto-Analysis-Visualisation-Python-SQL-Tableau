@@ -144,3 +144,15 @@ FROM
     cryptocurrencies
 ORDER BY 
     ath DESC;
+
+-- Analyse trends over time
+SELECT 
+    date_trunc('day', last_updated) AS day, 
+    AVG(current_price) AS avg_price, 
+    SUM(market_cap) AS total_market_cap
+FROM 
+    cryptocurrencies
+GROUP BY 
+    day
+ORDER BY 
+    day;
