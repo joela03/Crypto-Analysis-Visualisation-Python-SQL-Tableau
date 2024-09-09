@@ -118,3 +118,16 @@ FROM
 ORDER BY 
     ABS(price_change_percentage_24h) DESC
 LIMIT 10;
+
+-- Finding insights from ROI data
+SELECT 
+    name, 
+    symbol, 
+    roi->>'times' AS times_roi, 
+    roi->>'currency' AS currency_roi
+FROM 
+    cryptocurrencies
+WHERE 
+    roi IS NOT NULL
+ORDER BY 
+    times_roi DESC;
