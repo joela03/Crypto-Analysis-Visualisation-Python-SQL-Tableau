@@ -183,7 +183,7 @@ def main():
                         if request_count >= 8:
                             elapsed_time = current_time - start_time
                             if elapsed_time < 60:
-                                sleep_time = 60 - elapsed_time
+                                sleep_time = 70 - elapsed_time
                                 print(f"""Rate limit reached. Sleeping for {
                                       sleep_time:.2f} seconds...""")
                                 time.sleep(sleep_time)
