@@ -131,3 +131,16 @@ WHERE
     roi IS NOT NULL
 ORDER BY 
     times_roi DESC;
+
+-- ATH and ATL analysis
+SELECT 
+    name, 
+    symbol, 
+    ath, 
+    ath_change_percentage, 
+    atl, 
+    atl_change_percentage
+FROM 
+    cryptocurrencies
+ORDER BY 
+    ath DESC;
