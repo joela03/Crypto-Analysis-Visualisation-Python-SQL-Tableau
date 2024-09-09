@@ -83,7 +83,6 @@ ORDER BY
     last_updated DESC;
 
 -- Find's the market cap distribution
-
 SELECT 
     CASE
         WHEN market_cap < 10000000 THEN '< 10M'
@@ -98,3 +97,13 @@ GROUP BY
     market_cap_range
 ORDER BY 
     market_cap_range;
+
+-- Ordering cryptocurrencies by market cap rank
+SELECT 
+    name, 
+    symbol, 
+    market_cap_rank
+FROM 
+    cryptocurrencies
+ORDER BY 
+    market_cap_rank;
