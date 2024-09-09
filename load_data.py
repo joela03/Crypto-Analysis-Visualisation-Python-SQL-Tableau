@@ -67,85 +67,94 @@ def insert_cryptocurrencies(conn, crypto_data):
     """Insert cryptocurrency information into the PostgreSQL database."""
     curs = get_cursor(conn)
 
-    query = """INSERT INTO cryptocurrencies (
-                id, symbol, name, current_price, market_cap, market_cap_rank,
-                fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h,
-                price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
-                circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
-                ath_date, atl, atl_change_percentage, atl_date, roi, last_updated
-            ) VALUES (
-                %s, %s, %s, %s, %s, %s, %s, %s,
-                %s, %s, %s, %s, %s, %s,%s, %s, 
-                %s, %s, %s, %s, %s, %s, %s, %s, %s
-            )
-            ON CONFLICT (id) DO UPDATE
-            SET
-                symbol = EXCLUDED.symbol,
-                name = EXCLUDED.name,
-                current_price = EXCLUDED.current_price,
-                market_cap = EXCLUDED.market_cap,
-                market_cap_rank = EXCLUDED.market_cap_rank,
-                fully_diluted_valuation = EXCLUDED.fully_diluted_valuation,
-                total_volume = EXCLUDED.total_volume,
-                high_24h = EXCLUDED.high_24h,
-                low_24h = EXCLUDED.low_24h,
-                price_change_24h = EXCLUDED.price_change_24h,
-                price_change_percentage_24h = EXCLUDED.price_change_percentage_24h,
-                market_cap_change_24h = EXCLUDED.market_cap_change_24h,
-                market_cap_change_percentage_24h = EXCLUDED.market_cap_change_percentage_24h,
-                circulating_supply = EXCLUDED.circulating_supply,
-                total_supply = EXCLUDED.total_supply,
-                max_supply = EXCLUDED.max_supply,
-                ath = EXCLUDED.ath,
-                ath_change_percentage = EXCLUDED.ath_change_percentage,
-                ath_date = EXCLUDED.ath_date,
-                atl = EXCLUDED.atl,
-                atl_change_percentage = EXCLUDED.atl_change_percentage,
-                atl_date = EXCLUDED.atl_date,
-                roi = EXCLUDED.roi,
-                last_updated = EXCLUDED.last_updated"""
+    try:
+        query = """INSERT INTO cryptocurrencies (
+                    id, symbol, name, current_price, market_cap, market_cap_rank,
+                    fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h,
+                    price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+                    circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
+                    ath_date, atl, atl_change_percentage, atl_date, roi, last_updated
+                ) VALUES (
+                    %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s,%s, %s, 
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s
+                )
+                ON CONFLICT (id) DO UPDATE
+                SET
+                    symbol = EXCLUDED.symbol,
+                    name = EXCLUDED.name,
+                    current_price = EXCLUDED.current_price,
+                    market_cap = EXCLUDED.market_cap,
+                    market_cap_rank = EXCLUDED.market_cap_rank,
+                    fully_diluted_valuation = EXCLUDED.fully_diluted_valuation,
+                    total_volume = EXCLUDED.total_volume,
+                    high_24h = EXCLUDED.high_24h,
+                    low_24h = EXCLUDED.low_24h,
+                    price_change_24h = EXCLUDED.price_change_24h,
+                    price_change_percentage_24h = EXCLUDED.price_change_percentage_24h,
+                    market_cap_change_24h = EXCLUDED.market_cap_change_24h,
+                    market_cap_change_percentage_24h = EXCLUDED.market_cap_change_percentage_24h,
+                    circulating_supply = EXCLUDED.circulating_supply,
+                    total_supply = EXCLUDED.total_supply,
+                    max_supply = EXCLUDED.max_supply,
+                    ath = EXCLUDED.ath,
+                    ath_change_percentage = EXCLUDED.ath_change_percentage,
+                    ath_date = EXCLUDED.ath_date,
+                    atl = EXCLUDED.atl,
+                    atl_change_percentage = EXCLUDED.atl_change_percentage,
+                    atl_date = EXCLUDED.atl_date,
+                    roi = EXCLUDED.roi,
+                    last_updated = EXCLUDED.last_updated"""
 
-    id = crypto_data.get('id')
-    symbol = crypto_data.get('symbol')
-    name = crypto_data.get('name')
-    current_price = crypto_data.get('current_price')
-    market_cap = crypto_data.get('market_cap')
-    market_cap_rank = crypto_data.get('market_cap_rank')
-    fully_diluted_valuation = crypto_data.get('fully_diluted_valuation')
-    total_volume = crypto_data.get('total_volume')
-    high_24h = crypto_data.get('high_24h')
-    low_24h = crypto_data.get('low_24h')
-    price_change_24h = crypto_data.get('price_change_24h')
-    price_change_percentage_24h = crypto_data.get(
-        'price_change_percentage_24h')
-    market_cap_change_24h = crypto_data.get('market_cap_change_24h')
-    market_cap_change_percentage_24h = crypto_data.get(
-        'market_cap_change_percentage_24h')
-    circulating_supply = crypto_data.get('circulating_supply')
-    total_supply = crypto_data.get('total_supply')
-    max_supply = crypto_data.get('max_supply')
-    ath = crypto_data.get('ath')
-    ath_change_percentage = crypto_data.get('ath_change_percentage')
-    ath_date = crypto_data.get('ath_date')
-    atl = crypto_data.get('atl')
-    atl_change_percentage = crypto_data.get('atl_change_percentage')
-    atl_date = crypto_data.get('atl_date')
-    roi = json.dumps(crypto_data.get(
-        'roi')) if crypto_data.get('roi') else None
-    last_updated = crypto_data.get('last_updated')
+        id = crypto_data.get('id')
+        symbol = crypto_data.get('symbol')
+        name = crypto_data.get('name')
+        current_price = crypto_data.get('current_price')
+        market_cap = crypto_data.get('market_cap')
+        market_cap_rank = crypto_data.get('market_cap_rank')
+        fully_diluted_valuation = crypto_data.get('fully_diluted_valuation')
+        total_volume = crypto_data.get('total_volume')
+        high_24h = crypto_data.get('high_24h')
+        low_24h = crypto_data.get('low_24h')
+        price_change_24h = crypto_data.get('price_change_24h')
+        price_change_percentage_24h = crypto_data.get(
+            'price_change_percentage_24h')
+        market_cap_change_24h = crypto_data.get('market_cap_change_24h')
+        market_cap_change_percentage_24h = crypto_data.get(
+            'market_cap_change_percentage_24h')
+        circulating_supply = crypto_data.get('circulating_supply')
+        total_supply = crypto_data.get('total_supply')
+        max_supply = crypto_data.get('max_supply')
+        ath = crypto_data.get('ath')
+        ath_change_percentage = crypto_data.get('ath_change_percentage')
+        ath_date = crypto_data.get('ath_date')
+        atl = crypto_data.get('atl')
+        atl_change_percentage = crypto_data.get('atl_change_percentage')
+        atl_date = crypto_data.get('atl_date')
+        roi = json.dumps(crypto_data.get(
+            'roi')) if crypto_data.get('roi') else None
+        last_updated = crypto_data.get('last_updated')
 
-    curs.execute(query, (
-        id, symbol, name, current_price, market_cap, market_cap_rank,
-        fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h,
-        price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
-        circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
-        ath_date, atl, atl_change_percentage, atl_date, roi, last_updated,
-    ))
-    data = curs.rowcount()
-    conn.commit()
-    conn.close()
+        curs.execute(query, (
+            id, symbol, name, current_price, market_cap, market_cap_rank,
+            fully_diluted_valuation, total_volume, high_24h, low_24h, price_change_24h,
+            price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+            circulating_supply, total_supply, max_supply, ath, ath_change_percentage,
+            ath_date, atl, atl_change_percentage, atl_date, roi, last_updated,
+        ))
+        rowcount = curs.rowcount
+        conn.commit()
 
-    return data
+        return rowcount
+
+    except psycopg2.DatabaseError as e:
+        conn.rollback()
+        print(f"Database error: {e}")
+        return None
+    except Exception as e:
+        conn.rollback()
+        print(f"Error: {e}")
+        return None
 
 
 def main():
