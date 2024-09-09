@@ -30,6 +30,7 @@ SELECT
 FROM cryptocurrencies;
 
 -- Checks summary statistics
+CREATE TABLE summary_statistics as
 SELECT 
     MIN(current_price) AS min_current_price,
     MAX(current_price) AS max_current_price,
@@ -59,6 +60,7 @@ SELECT
 FROM cryptocurrencies;
 
 -- SELECT'S top 10 cryptocurrencies by market cap
+CREATE TABLE top_10_cryptos as
 SELECT 
     name, 
     symbol, 
@@ -70,6 +72,7 @@ ORDER BY
 LIMIT 10;
 
 -- Find's price change over time
+CREATE TABLE price_change as
 SELECT 
     name, 
     symbol, 
@@ -83,6 +86,7 @@ ORDER BY
     last_updated DESC;
 
 -- Find's the market cap distribution
+CREATE TABLE market_cap_distribution as
 SELECT 
     CASE
         WHEN market_cap < 10000000 THEN '< 10M'
@@ -99,6 +103,7 @@ ORDER BY
     market_cap_range;
 
 -- Ordering cryptocurrencies by market cap rank
+CREATE TABLE market_cap_rank as
 SELECT 
     name, 
     symbol, 
@@ -109,6 +114,7 @@ ORDER BY
     market_cap_rank;
 
 -- Identify most volatile crypto currencies
+CREATE TABLE most_volatile_currencies as
 SELECT 
     name, 
     symbol, 
@@ -120,6 +126,7 @@ ORDER BY
 LIMIT 10;
 
 -- Finding insights from ROI data
+CREATE TABLE roi_insights as
 SELECT 
     name, 
     symbol, 
@@ -133,6 +140,7 @@ ORDER BY
     times_roi DESC;
 
 -- ATH and ATL analysis
+CREATE TABLE ath_ahl_analysis as
 SELECT 
     name, 
     symbol, 
@@ -146,6 +154,7 @@ ORDER BY
     ath DESC;
 
 -- Analyse trends over time
+CREATE TABLE time_series_aggregation as
 SELECT 
     date_trunc('day', last_updated) AS day, 
     AVG(current_price) AS avg_price, 
