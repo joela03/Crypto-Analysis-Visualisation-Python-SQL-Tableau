@@ -175,12 +175,12 @@ def main():
             with conn:
                 with conn.cursor() as cursor:
                     start_time = time.time()
-                    request_count = 0
+                    request_count = 2
 
                     for id in random_ids:
                         current_time = time.time()
 
-                        if request_count >= 30:
+                        if request_count >= 8:
                             elapsed_time = current_time - start_time
                             if elapsed_time < 60:
                                 sleep_time = 60 - elapsed_time
