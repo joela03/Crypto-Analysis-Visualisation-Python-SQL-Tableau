@@ -69,3 +69,15 @@ ORDER BY
     market_cap DESC
 LIMIT 10;
 
+-- Find's price change over time
+SELECT 
+    name, 
+    symbol, 
+    last_updated, 
+    current_price, 
+    price_change_24h, 
+    price_change_percentage_24h
+FROM 
+    cryptocurrencies
+ORDER BY 
+    last_updated DESC;
