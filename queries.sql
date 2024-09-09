@@ -156,3 +156,7 @@ GROUP BY
     day
 ORDER BY 
     day;
+
+CREATE INDEX idx_symbol ON cryptocurrencies(symbol);
+CREATE INDEX idx_market_cap ON cryptocurrencies(market_cap);
+CREATE INDEX idx_last_updated ON cryptocurrencies(last_updated);
