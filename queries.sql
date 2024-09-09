@@ -29,3 +29,31 @@ SELECT
     COUNT(last_updated) AS count_last_updated
 FROM cryptocurrencies;
 
+-- Checks summary statistics
+SELECT 
+    MIN(current_price) AS min_current_price,
+    MAX(current_price) AS max_current_price,
+    AVG(current_price) AS avg_current_price,
+    STDDEV(current_price) AS stddev_current_price,
+    
+    MIN(market_cap) AS min_market_cap,
+    MAX(market_cap) AS max_market_cap,
+    AVG(market_cap) AS avg_market_cap,
+    STDDEV(market_cap) AS stddev_market_cap,
+    
+    MIN(market_cap_rank) AS min_market_cap_rank,
+    MAX(market_cap_rank) AS max_market_cap_rank,
+    AVG(market_cap_rank) AS avg_market_cap_rank,
+    STDDEV(market_cap_rank) AS stddev_market_cap_rank,
+
+    MIN(ath) AS min_ath,
+    MAX(ath) AS max_ath,
+    AVG(ath) AS avg_ath,
+    STDDEV(ath) AS stddev_ath,
+
+    MIN(atl) AS min_atl,
+    MAX(atl) AS max_atl,
+    AVG(atl) AS avg_atl,
+    STDDEV(atl) AS stddev_atl
+
+FROM cryptocurrencies;
